@@ -25,15 +25,26 @@ body {
   --dark: #325c6f;
   --accent: #df8162;
   --burnt: #d57a5c;
+  --card: #faebe6;
   color: white;
   background: var(--accent);
   height: 100%;
+}
 
-  h1 {
-    margin: 25px 0;
-    font-size: 50px;
-    font-weight: 500;
-  }
+h1 {
+  margin: 25px 0;
+  font-size: 50px;
+  font-weight: 500;
+}
+
+h2 {
+  font-size: 35px;
+  font-weight: 500;
+}
+
+h3 {
+  font-size: 20px;
+  font-weight: 500;
 }
 
 .page {
@@ -44,11 +55,10 @@ body {
   overflow-y: scroll;
 
   .content {
-    padding: 50px;
+    padding: 20px;
     max-width: 750px;
     width: 100%;
     margin: auto;
-    background: var(--accent);
   }
 }
 

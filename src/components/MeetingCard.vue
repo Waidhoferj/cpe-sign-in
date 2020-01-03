@@ -2,32 +2,54 @@
   <div class="meeting-card">
     <header>
       <img src alt />
-      <h3></h3>
-      <h2>meeting.title</h2>
+      <h3 class="label">{{ label }}</h3>
+      <h2 class="subject">{{ subject }}</h2>
     </header>
-    <section class="description">{{ meeting.description }}</section>
+    <div class="description">
+      Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt
+      voluptatum ipsam sunt, quod quaerat harum! Eaque ipsum blanditiis
+      assumenda pariatur culpa quas facilis nemo vel, facere asperiores
+      reiciendis hic unde.
+    </div>
   </div>
 </template>
 
 <script>
 export default {
   props: {
-    meeting: Object
-  },
-  computed() {},
-  methods: {
-    getContent() {
-      this.$prismic.client.getSingle("overview").then(document => {
-        this.title = document.data.title;
-        this.fields.logo = document.data.logo;
-        this.fields.richContent = document.data.rich_content;
-      });
+    subject: {
+      type: String,
+      required: true
+    },
+    label: {
+      type: String,
+      default: "Tonight's Meeting"
+    },
+    description: {
+      type: String,
+      required: true
+    },
+    img: {
+      default: "img"
     }
-  },
-  created() {
-    this.getContext();
   }
 };
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+.meeting-card {
+  background: var(--card);
+  border-radius: 7px;
+  width: 100%;
+  header {
+    text-align: center;
+    padding: 20px 10px;
+  }
+  .description {
+    background: white;
+    padding: 15px;
+    border-radius: 7px;
+    padding: 20px;
+  }
+}
+</style>
