@@ -24,19 +24,19 @@
           label="Password"
           :invalid="$v.password.$error"
           errorMessage="must have at least 7 characters"
+          type="password"
         ></text-field>
         <text-field
           v-model="$v.confirmPassword.$model"
           label="Confirm Password"
           :invalid="$v.confirmPassword.$error"
           errorMessage="does not match password"
+          type="password"
         ></text-field>
         <input type="submit" value style="display: none" />
       </form>
       <div class="buttons">
-        <button class="primary" ref="signUpButton" @click="signUp">
-          Sign Up
-        </button>
+        <button class="primary" ref="signUpButton" @click="signUp">Sign Up</button>
         <button class="secondary" @click="$router.push('/')">Log In</button>
       </div>
     </div>
@@ -61,15 +61,15 @@ export default {
     };
   },
   methods: {
-    signUp() {
+    async signUp() {
       this.$v.$touch();
       if (this.$v.$error) return animateEl(this.$refs.signUpButton, "shake");
-      return;
-      auth
-        .createUserWithEmailAndPassword(this.email, this.password)
-        .catch(err =>
-          console.log("could not create a user at this time: ", err)
-        );
+      // try {
+      //   await auth.createUserWithEmailAndPassword(this.email, this.password);
+      // } catch (err) {
+      //   console.log("Could not create user because: ", err);
+      // }
+      this.$router.push("/brief");
     }
   },
   validations: {

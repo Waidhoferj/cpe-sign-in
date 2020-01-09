@@ -17,17 +17,13 @@
           label="Password"
           :invalid="$v.password.$error"
           errorMessage="must be at least 7 characters"
-        >
-        </text-field>
+          type="password"
+        ></text-field>
         <input type="submit" value style="display: none" />
       </form>
       <div class="buttons">
-        <button class="primary" ref="signInButton" @click="signIn">
-          Log In
-        </button>
-        <button class="secondary" @click="$router.push('/sign-up')">
-          Sign Up
-        </button>
+        <button class="primary" ref="signInButton" @click="signIn">Log In</button>
+        <button class="secondary" @click="$router.push('/sign-up')">Sign Up</button>
       </div>
     </div>
   </div>
@@ -53,16 +49,16 @@ export default {
     async signIn() {
       this.$v.$touch();
       if (this.$v.$error) return animateEl(this.$refs.signInButton, "shake");
-      try {
-        const user = await auth.signInWithEmailAndPassword(
-          this.email,
-          this.password
-        );
-      } catch (e) {
-        alert("Incorrect Email or password");
-        return;
-      }
-      this.$router.push("/overview");
+      // try {
+      //   const user = await auth.signInWithEmailAndPassword(
+      //     this.email,
+      //     this.password
+      //   );
+      // } catch (e) {
+      //   alert("Incorrect Email or password");
+      //   return;
+      // }
+      this.$router.push("/brief");
     }
   },
   validations: {

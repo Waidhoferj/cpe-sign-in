@@ -11,7 +11,6 @@ let config = {
   messagingSenderId: "262626193290",
   appId: "1:262626193290:web:ff81c5eff6993b06"
 };
-console.log("ran firebase file");
 
 firebase.initializeApp(config);
 export const db = firebase.firestore();

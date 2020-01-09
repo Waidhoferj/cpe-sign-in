@@ -1,14 +1,12 @@
 <template>
   <div class="text-field" :class="{ invalid }">
-    <p class="label" :class="{ shown: showLabel }">
-      {{ label }}
-    </p>
+    <p class="label" :class="{ shown: showLabel }">{{ label }}</p>
     <input
       :value="value"
       @input="$emit('input', $event.target.value)"
       @blur="$emit('blur', $event)"
       :placeholder="label"
-      type="text"
+      :type="type"
     />
     <p class="label error" :class="{ shown: invalid }">{{ errorMessage }}</p>
   </div>
@@ -21,6 +19,10 @@ export default {
       type: String,
       required: true
     },
+    type: {
+      type: String,
+      default: "text"
+    },
     invalid: {
       type: Boolean,
       default: false
@@ -28,6 +30,7 @@ export default {
     errorMessage: String,
     value: String
   },
+
   computed: {
     showLabel() {
       return this.value.length;

@@ -1,16 +1,11 @@
 <template>
   <div class="meeting-card">
     <header>
-      <img src alt />
+      <img v-if="image" :src="image" alt />
       <h3 class="label">{{ label }}</h3>
       <h2 class="subject">{{ subject }}</h2>
     </header>
-    <div class="description">
-      Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt
-      voluptatum ipsam sunt, quod quaerat harum! Eaque ipsum blanditiis
-      assumenda pariatur culpa quas facilis nemo vel, facere asperiores
-      reiciendis hic unde.
-    </div>
+    <div class="description">{{description}}</div>
   </div>
 </template>
 
@@ -29,9 +24,7 @@ export default {
       type: String,
       required: true
     },
-    img: {
-      default: "img"
-    }
+    image: String
   }
 };
 </script>
@@ -41,9 +34,16 @@ export default {
   background: var(--card);
   border-radius: 7px;
   width: 100%;
+  margin: 20px, auto;
   header {
     text-align: center;
     padding: 20px 10px;
+    img {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      margin-bottom: 10px;
+    }
   }
   .description {
     background: white;

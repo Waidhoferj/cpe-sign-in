@@ -5,14 +5,7 @@
       <h2>Upcoming Events</h2>
     </header>
     <ul class="events">
-      <event
-        v-for="event in events"
-        :title="event.title"
-        :description="event.description"
-        :date="event.date"
-        :key="event.title"
-      >
-      </event>
+      <event v-for="event in events" v-bind="event" :key="event.title"></event>
     </ul>
   </div>
 </template>
@@ -34,10 +27,18 @@ export default {
 
 <style lang="scss">
 .upcoming-events {
+  margin: 20px auto;
   background: var(--card);
+  border-radius: 7px;
+
+  header {
+    padding: 20px 10px;
+    text-align: center;
+  }
   .events {
     list-style: none;
     padding: 10px 5px;
+    padding-top: 0;
   }
 }
 </style>

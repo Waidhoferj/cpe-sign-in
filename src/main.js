@@ -4,6 +4,10 @@ import router from "./router";
 import Vuelidate from "vuelidate";
 import PrismicVue from "prismic-vue";
 import linkResolver from "./link-resolver";
+import VueWaypoint from "vue-waypoint";
+
+// Waypoint plugin
+Vue.use(VueWaypoint);
 
 // Add this before the new Vue instance
 Vue.use(PrismicVue, {
