@@ -61,7 +61,7 @@ export default {
      */
     signedIn: async function(signedIn) {
       if (!signedIn) return;
-      if (this.eventId) await this.logEventAttendance(this.eventId);
+      if (this.eventId) this.logEventAttendance(this.eventId);
       this.$router.push("/brief");
     }
   },
