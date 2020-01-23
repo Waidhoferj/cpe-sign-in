@@ -23,42 +23,79 @@
       </form>
       <div class="buttons">
         <button class="primary" ref="signInButton" @click="signIn">Log In</button>
-        <button class="secondary" @click="$router.push('/sign-up')">Sign Up</button>
+        <button class="secondary" @click="$router.push('signUp')">Sign Up</button>
       </div>
     </div>
+    <loader v-if="loading"></loader>
   </div>
 </template>
 
 <script>
 import TextField from "@/components/TextField";
-import { auth } from "@/modules/firebase";
+import Loader from "@/components/Loader";
+
+import firebase from "firebase/app";
+import { auth, db } from "@/modules/firebase";
 import { required, minLength, email } from "vuelidate/lib/validators";
 import { animateEl } from "@/modules/animate";
 export default {
   name: "signIn",
   components: {
-    TextField
+    TextField,
+    Loader
+  },
+  props: {
+    eventId: String,
+    signedIn: Boolean
   },
   data() {
     return {
       email: "",
-      password: ""
+      password: "",
+      loading: false
     };
   },
+  watch: {
+    /**
+     * When signed in becomes true, the user is automatically si
+     */
+    signedIn: function(signedIn) {
+      if (!signedIn) return;
+      if (this.eventId) this.logEventAttendance(this.eventId);
+      this.$router.push("/brief");
+    }
+  },
   methods: {
+    /**
+     * Authenitcates user with Firebase using email and password
+     */
     async signIn() {
       this.$v.$touch();
       if (this.$v.$error) return animateEl(this.$refs.signInButton, "shake");
-      // try {
-      //   const user = await auth.signInWithEmailAndPassword(
-      //     this.email,
-      //     this.password
-      //   );
-      // } catch (e) {
-      //   alert("Incorrect Email or password");
-      //   return;
-      // }
-      this.$router.push("/brief");
+      this.loading = true;
+
+      try {
+        const user = await auth.signInWithEmailAndPassword(
+          this.email,
+          this.password
+        );
+      } catch (err) {
+        this.loading = false;
+        alert(err.message);
+        return;
+      }
+      this.loading = false;
+    },
+    /**
+     * Logs user as an event attendee in Firebase
+     */
+    async logEventAttendance(eventId) {
+      return db
+        .collection("users")
+        .doc(auth.currentUser.uid)
+        .update({
+          eventsAttended: firebase.firestore.FieldValue.arrayUnion(eventId)
+        });
     }
   },
   validations: {

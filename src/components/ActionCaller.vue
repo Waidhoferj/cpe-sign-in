@@ -1,6 +1,5 @@
 <template>
   <div class="action-caller">
-    <img src="@/assets/cpe-logo.svg" />
     <h2>Now Go</h2>
     <h3
       class="current-action"
@@ -43,7 +42,7 @@ export default {
   methods: {
     cycleActions() {
       clearInterval(this.actionInterval);
-      this.actionInterval = setInterval(this.incrementAction, 2000);
+      this.actionInterval = setInterval(this.incrementAction, 3000);
     },
     async incrementAction() {
       animateEl(this.$refs.currentAction, "exit");
@@ -67,7 +66,7 @@ export default {
 
   .current-action {
     &.exit {
-      animation: exit 1s ease-in-out;
+      animation: exit 1s ease-in-out forwards;
     }
   }
 
@@ -78,7 +77,7 @@ export default {
     opacity: 0;
 
     &.enter {
-      animation: enter 1s ease-in-out;
+      animation: enter 1s ease-in-out forwards;
     }
   }
 
@@ -89,6 +88,7 @@ export default {
       opacity: 0;
     }
     to {
+      transform: scale(1) translateY(-100%);
       opacity: 1;
     }
   }

@@ -2,6 +2,7 @@
   <li class="event" @click="openEvent">
     <img src="@/assets/calendar.svg" />
     <span class="date">{{ date }}</span>
+
     <h3>{{ title }}</h3>
     <p>{{ description }}</p>
   </li>
@@ -37,6 +38,10 @@ export default {
   background: white;
   transition: transform 0.5s;
   cursor: pointer;
+
+  .date {
+    vertical-align: 5px;
+  }
 
   &:active {
     transform: scale(0.97);

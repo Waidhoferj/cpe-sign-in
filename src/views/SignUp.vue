@@ -5,10 +5,23 @@
       <h1 class="title">Sign Up</h1>
       <form @submit.prevent="signIn">
         <text-field
-          v-model="name"
-          @blur="$v.name.$touch()"
-          label="Name"
-          :invalid="$v.name.$error"
+          v-model="firstName"
+          @blur="$v.firstName.$touch()"
+          label="First Name"
+          :invalid="$v.firstName.$error"
+          errorMessage="required"
+        ></text-field>
+        <text-field
+          v-model="lastName"
+          @blur="$v.lastName.$touch()"
+          label="Last Name"
+          :invalid="$v.lastName.$error"
+          errorMessage="required"
+        ></text-field>
+        <text-field
+          v-model="$v.major.$model"
+          label="Major"
+          :invalid="$v.major.$error"
           errorMessage="required"
         ></text-field>
         <text-field
@@ -26,54 +39,98 @@
           errorMessage="must have at least 7 characters"
           type="password"
         ></text-field>
-        <text-field
-          v-model="$v.confirmPassword.$model"
-          label="Confirm Password"
-          :invalid="$v.confirmPassword.$error"
-          errorMessage="does not match password"
-          type="password"
-        ></text-field>
+
         <input type="submit" value style="display: none" />
       </form>
       <div class="buttons">
         <button class="primary" ref="signUpButton" @click="signUp">Sign Up</button>
-        <button class="secondary" @click="$router.push('/')">Log In</button>
+        <button class="secondary" @click="$router.push('login')">Log In</button>
       </div>
     </div>
+    <loader v-if="loading"></loader>
   </div>
 </template>
 
 <script>
-import { auth } from "@/modules/firebase";
 import TextField from "@/components/TextField";
-import { required, minLength, email, sameAs } from "vuelidate/lib/validators";
+import Loader from "@/components/Loader";
+import { auth, db } from "@/modules/firebase";
+import firebase from "firebase/app";
+import { required, minLength, email } from "vuelidate/lib/validators";
 import { animateEl } from "@/modules/animate";
 export default {
   components: {
-    TextField
+    TextField,
+    Loader
+  },
+  props: {
+    eventId: String
   },
   data() {
     return {
-      name: "",
+      loading: false,
+      firstName: "",
+      lastName: "",
+      major: "",
       email: "",
-      password: "",
-      confirmPassword: ""
+      password: ""
     };
   },
   methods: {
     async signUp() {
       this.$v.$touch();
       if (this.$v.$error) return animateEl(this.$refs.signUpButton, "shake");
-      // try {
-      //   await auth.createUserWithEmailAndPassword(this.email, this.password);
-      // } catch (err) {
-      //   console.log("Could not create user because: ", err);
-      // }
-      this.$router.push("/brief");
+
+      let gender;
+      this.loading = true;
+      try {
+        //Sign up
+        await auth.createUserWithEmailAndPassword(this.email, this.password);
+        auth.currentUser.updateProfile({
+          displayName: this.firstName
+        });
+      } catch (err) {
+        this.loading = false;
+        return alert(err.message);
+      }
+      //Get gender
+      gender = await this.predictGender();
+      //Create the account
+      try {
+        await db
+          .collection("users")
+          .doc(auth.currentUser.uid)
+          .set({
+            firstName: this.firstName,
+            lastName: this.lastName,
+            major: this.major,
+            gender,
+            eventsAttended: this.eventId ? [this.eventId] : []
+          });
+      } catch (err) {
+        this.loading = false;
+        return alert(err.message);
+      }
+      this.loading = false;
+      this.$router.push("brief");
+    },
+    async predictGender() {
+      return fetch(
+        `https://gender-api.com/get?name=${this.firstName}&key=lAhskKfsUQLhEHKeJp`
+      )
+        .then(response => response.json())
+        .then(data => data.gender)
+        .catch(err => "unknown");
     }
   },
   validations: {
-    name: {
+    firstName: {
+      required
+    },
+    lastName: {
+      required
+    },
+    major: {
       required
     },
     email: {
@@ -83,10 +140,6 @@ export default {
     password: {
       required,
       minLength: minLength(7)
-    },
-    confirmPassword: {
-      required,
-      sameAsPassword: sameAs("password")
     }
   }
 };

@@ -27,7 +27,7 @@ export default {
       let content = meeting.primary;
       return {
         image: content.image.url,
-        label: content.label[0].text,
+        label: content.label.length ? content.label[0].text : "",
         subject: content.subject[0].text,
         description: content.description[0].text
       };
@@ -56,17 +56,19 @@ export default {
       };
       return events.items.map(event => ({
         title: event.title[0].text,
-        date: formatDateString(event.date),
-        description: event.description[0].text
+        date: event.date ? formatDateString(event.date) : "",
+        description: event.description ? event.description[0].text : "",
+        link: event.link.url
       }));
     },
 
     formatAnnouncement(announcement) {
       let content = announcement.primary;
-      let resources = announcement.items.map(link => ({
-        label: link.link_title[0].text,
-        url: link.resource.url
-      }));
+      let resources = announcement.items.reduce((data, link) => {
+        if (link.link_title.length && link.resource.url)
+          data.push({ label: link.link_title[0].text, url: link.resource.url });
+        return data;
+      }, []);
       return {
         icon: content.icon.url,
         image: content.image.url,

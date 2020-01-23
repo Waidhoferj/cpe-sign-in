@@ -1,17 +1,18 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import SignIn from "../views/SignIn.vue";
+import { auth } from "@/modules/firebase";
 
 Vue.use(VueRouter);
 
 const routes = [
   {
-    path: "/",
-    name: "signIn",
+    path: "/login",
+    name: "login",
     component: SignIn
   },
   {
-    path: "/sign-up",
+    path: "/signup",
     name: "signUp",
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
@@ -24,6 +25,18 @@ const routes = [
     name: "brief",
     component: () =>
       import(/* webpackChunkName: "overview" */ "../views/Brief.vue")
+  },
+  {
+    path: "/qrlogin/:qrcodeId",
+    name: "qrCodeLogin",
+    props: true,
+    component: () => import("../views/QRCodeDisplay.vue")
+  },
+  {
+    path: "/events",
+    name: "events",
+    props: true,
+    component: () => import("../views/Events.vue")
   }
 ];
 

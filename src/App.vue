@@ -1,10 +1,31 @@
 <template>
   <div id="app">
     <transition name="fade" mode="out-in">
-      <router-view />
+      <router-view :signedIn="signedIn" :eventId="eventId" />
     </transition>
   </div>
 </template>
+
+<script>
+import { auth } from "@/modules/firebase";
+export default {
+  data() {
+    return {
+      signedIn: false,
+      eventId: ""
+    };
+  },
+  created() {
+    let { eventId } = this.$route.query;
+    if (eventId) this.eventId = eventId;
+    auth.onAuthStateChanged(user => {
+      if (user) {
+        this.signedIn = true;
+      } else this.signedIn = false;
+    });
+  }
+};
+</script>
 
 <style lang="scss">
 * {
@@ -33,7 +54,7 @@ body {
 
 h1 {
   margin: 25px 0;
-  font-size: 50px;
+  font-size: 40px;
   font-weight: 500;
 }
 
@@ -59,6 +80,20 @@ h3 {
     max-width: 750px;
     width: 100%;
     margin: auto;
+  }
+}
+
+.back {
+  z-index: 3;
+  cursor: pointer;
+  position: fixed;
+  width: 40px;
+  top: 20px;
+  left: 20px;
+  transition: transform 0.3s, opacity 0.7s;
+
+  &:active {
+    transform: scale(0.95);
   }
 }
 
@@ -110,7 +145,8 @@ button {
 .fade {
   &-enter-active,
   &-leave-active {
-    transition: opacity 0.7s;
+    transition: opacity 0.4s;
+    pointer-events: none;
   }
 
   &-enter,

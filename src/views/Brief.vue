@@ -1,8 +1,15 @@
 <template>
   <div class="page overview-page">
+    <img
+      src="@/assets/back-icon.svg"
+      :class="{ hide: headerHidden }"
+      alt="log out"
+      class="back"
+      @click="logOut"
+    />
     <header class="welcome-message" :class="{ hide: headerHidden }">
       <img src="@/assets/cpe-logo.svg" />
-      <h1>Welcome</h1>
+      <h1>Welcome {{ user ? user.displayName :"" }}</h1>
       <p>We have an awesome meeting planned for you! Scroll down to learn more!</p>
     </header>
     <div class="content">
@@ -30,7 +37,8 @@ import MeetingCard from "@/components/MeetingCard";
 import UpcomingEvents from "@/components/UpcomingEvents";
 import Announcement from "@/components/Announcement";
 import ActionCaller from "@/components/ActionCaller";
-
+import { auth, db } from "@/modules/firebase";
+import firebase from "firebase/app";
 import Formatter from "@/modules/formatterMixin";
 export default {
   components: {
@@ -42,27 +50,26 @@ export default {
   mixins: [Formatter],
   data() {
     return {
+      user: auth.currentUser,
       /**
        * Information fetched from the CMS to present on the page
        */
       content: {
         meeting_info: {
-          subject: "test",
-          label: "test",
-          description:
-            "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Commodi blanditiis sint quisquam vitae fugiat exercitationem, nisi animi assumenda dolorum suscipit voluptates nam velit placeat quod repellendus illum quam rem veniam!",
+          subject: "",
+          label: "",
+          description: "",
           img: ""
         },
         upcoming_events: [],
         announcement: {
-          title: "test",
-          description:
-            "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Commodi blanditiis sint quisquam vitae fugiat exercitationem, nisi animi assumenda dolorum suscipit voluptates nam velit placeat quod repellendus illum quam rem veniam!",
+          title: "",
+          description: "",
           image: "",
           icon: "",
           resources: []
         },
-        call_to_action_footer: ["test", "tost"]
+        call_to_action_footer: ["", ""]
       },
       headerHidden: false,
       intersectionOptions: {
@@ -97,6 +104,10 @@ export default {
         this.$refs.meetingCard.$el.getBoundingClientRect().y -
           window.innerHeight <
         0;
+    },
+    logOut() {
+      auth.signOut();
+      this.$router.push("/login");
     }
   },
   mounted() {
@@ -123,18 +134,19 @@ export default {
     max-width: 500px;
     pointer-events: none;
     transition: opacity 0.7s;
-
-    &.hide {
-      opacity: 0;
-    }
   }
   .content {
-    z-index: 5;
+    z-index: 2;
   }
 
   .spacer {
+    pointer-events: none;
     height: 110vh;
     width: 100%;
+  }
+
+  .hide {
+    opacity: 0;
   }
 }
 </style>

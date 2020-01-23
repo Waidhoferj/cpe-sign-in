@@ -7,7 +7,13 @@
     </header>
     <p class="description">{{description}}</p>
     <div class="resources">
-      <a class="resource" v-for="{url, label} in resources" :href="url" :key="label">{{label}}</a>
+      <a
+        class="resource"
+        v-for="{url, label} in resources"
+        :href="url"
+        :key="label"
+        target="_blank"
+      >{{label}}</a>
     </div>
   </div>
 </template>
@@ -46,14 +52,20 @@ export default {
     padding: 20px 10px;
 
     .icon {
-      width: 70px;
-      height: 70px;
+      margin: auto;
+      display: block;
+      width: 50px;
+      height: 50px;
       margin-bottom: 12px;
     }
     .image {
-      width: 100%;
+      margin: auto;
+      display: block;
+      max-width: 100%;
+      width: 400px;
       height: 200px;
       border-radius: 7px;
+      object-fit: cover;
     }
   }
 
