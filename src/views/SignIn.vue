@@ -59,9 +59,9 @@ export default {
     /**
      * When signed in becomes true, the user is automatically si
      */
-    signedIn: function(signedIn) {
+    signedIn: async function(signedIn) {
       if (!signedIn) return;
-      if (this.eventId) this.logEventAttendance(this.eventId);
+      if (this.eventId) await this.logEventAttendance(this.eventId);
       this.$router.push("/brief");
     }
   },
@@ -89,7 +89,7 @@ export default {
     /**
      * Logs user as an event attendee in Firebase
      */
-    async logEventAttendance(eventId) {
+    logEventAttendance(eventId) {
       return db
         .collection("users")
         .doc(auth.currentUser.uid)
