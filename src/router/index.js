@@ -38,6 +38,12 @@ const routes = [
     props: true,
     component: () => import("../views/Events.vue")
   }
+  {
+    path: "*",
+    name: "default",
+    props: true,
+    component: SignIn
+  }
 ];
 
 const router = new VueRouter({
