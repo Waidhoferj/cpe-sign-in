@@ -37,7 +37,7 @@ const routes = [
     name: "events",
     props: true,
     component: () => import("../views/Events.vue")
-  }
+  },
   {
     path: "*",
     name: "default",
