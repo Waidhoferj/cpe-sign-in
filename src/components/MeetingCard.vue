@@ -1,11 +1,22 @@
-<template>
-  <div class="meeting-card">
+<template functional>
+  <div class="card meeting-card">
     <header>
-      <img v-if="image" :src="image" alt />
-      <h3 class="label">{{ label }}</h3>
-      <h2 class="subject">{{ subject }}</h2>
+      <img :src="props.image" alt />
+      <h3 class="label">{{ props.label }}</h3>
+      <h2 class="subject">{{ props.subject }}</h2>
     </header>
-    <div class="description">{{description}}</div>
+    <div class="panel">
+      <p class="description">{{props.description}}</p>
+      <div class="resources">
+        <a
+          class="resource"
+          v-for="{url, label} in props.resources"
+          :href="url"
+          :key="label"
+          target="_blank"
+        >{{label}}</a>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -24,32 +35,10 @@ export default {
       type: String,
       required: true
     },
-    image: String
+    image: String,
+    resources: Array
   }
 };
 </script>
 
-<style lang="scss">
-.meeting-card {
-  background: var(--card);
-  border-radius: 7px;
-  width: 100%;
-  margin: 20px, auto;
-  header {
-    text-align: center;
-    padding: 20px 10px;
-    img {
-      width: 100px;
-      height: 100px;
-      border-radius: 50%;
-      margin-bottom: 10px;
-    }
-  }
-  .description {
-    background: white;
-    padding: 15px;
-    border-radius: 7px;
-    padding: 20px;
-  }
-}
-</style>
+
