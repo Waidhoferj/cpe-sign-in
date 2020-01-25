@@ -57,7 +57,7 @@ export default {
   },
   watch: {
     /**
-     * When signed in becomes true, the user is automatically si
+     * When signed in becomes true, the user is automatically logs in
      */
     signedIn: async function(signedIn) {
       if (!signedIn) return;
