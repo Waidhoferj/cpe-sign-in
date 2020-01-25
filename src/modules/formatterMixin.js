@@ -16,11 +16,9 @@ export default {
         call_to_action_footer: this.formatCtaFooter
       };
       return sections.reduce((page, section) => {
-        page[section.slice_type] = sectionFormatters[section.slice_type](
-          section
-        );
+        page.push(sectionFormatters[section.slice_type](section));
         return page;
-      }, {});
+      }, []);
     },
 
     formatMeeting(meeting) {
@@ -29,37 +27,28 @@ export default {
         image: content.image.url,
         label: content.label.length ? content.label[0].text : "",
         subject: content.subject[0].text,
-        description: content.description[0].text
+        description: content.description[0].text,
+        resources: meeting.items.map(resource => ({
+          label: resource.link_title[0].text,
+          url: resource.link.url
+        })),
+        type: meeting.slice_type
       };
     },
 
-    formatEvents(events) {
-      let formatDateString = str => {
-        let months = [
-          "Jan",
-          "Feb",
-          "Mar",
-          "Apr",
-          "May",
-          "June",
-          "July",
-          "Aug",
-          "Sept",
-          "Oct",
-          "Nov",
-          "Dec"
-        ];
-        let date = new Date(str);
-        return `${
-          months[date.getMonth()]
-        } ${date.getDate()} ${date.getFullYear()}`;
-      };
-      return events.items.map(event => ({
+    formatEvents(content) {
+      let events = content.items.map(event => ({
         title: event.title[0].text,
-        date: event.date ? formatDateString(event.date) : "",
+        date: event.date
+          ? new Date(event.date).toDateString().slice(4, 10)
+          : "",
         description: event.description ? event.description[0].text : "",
         link: event.link.url
       }));
+      return {
+        events,
+        type: content.slice_type
+      };
     },
 
     formatAnnouncement(announcement) {
@@ -70,16 +59,19 @@ export default {
         return data;
       }, []);
       return {
-        icon: content.icon.url,
         image: content.image.url,
         title: content.title[0].text,
         description: content.description[0].text,
-        resources
+        resources,
+        type: announcement.slice_type
       };
     },
 
-    formatCtaFooter(cta) {
-      return cta.items.map(({ action }) => action[0].text);
+    formatCtaFooter(content) {
+      return {
+        actions: content.items.map(({ action }) => action[0].text),
+        type: content.slice_type
+      };
     }
   }
 };
