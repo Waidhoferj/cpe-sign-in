@@ -10,10 +10,14 @@
     <header class="welcome-message" :class="{ hide: headerHidden }">
       <img src="@/assets/cpe-logo.svg" />
       <h1>Welcome {{ user ? user.displayName :"" }}</h1>
-      <p>We have an awesome meeting planned for you! Scroll down to learn more!</p>
+      <div class="message" :class="{show: contentLoaded}">
+        <p>We have an awesome meeting planned for you! Scroll down to learn more!</p>
+        <img class="arrow" src="@/assets/arrow.svg" />
+      </div>
     </header>
-    <div class="content">
+    <div v-if="contentLoaded" class="content">
       <div class="spacer"></div>
+
       <meeting-card
         ref="meetingCard"
         v-bind="content.meeting_info"
@@ -79,6 +83,11 @@ export default {
       }
     };
   },
+  computed: {
+    contentLoaded() {
+      return this.content.meeting_info.label.length > 0;
+    }
+  },
   methods: {
     async getContent() {
       let response;
@@ -134,6 +143,30 @@ export default {
     max-width: 500px;
     pointer-events: none;
     transition: opacity 0.7s;
+
+    .message {
+      transition: all 1.5s;
+      opacity: 0;
+      transform: translateY(30px);
+      &.show {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .arrow {
+      margin-top: 40px;
+      animation: float 5s infinite ease-in-out;
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0px);
+        }
+        50% {
+          transform: translateY(10px);
+        }
+      }
+    }
   }
   .content {
     z-index: 2;
