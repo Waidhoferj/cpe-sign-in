@@ -63,6 +63,7 @@ export default {
   margin: 30px auto;
   text-align: center;
   color: white;
+  background: var(--accent);
 
   .current-action {
     &.exit {
