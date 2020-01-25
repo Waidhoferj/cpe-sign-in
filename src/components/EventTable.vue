@@ -7,12 +7,7 @@
       <th class="st-header">Start Time</th>
       <th class="et-header">End Time</th>
     </tr>
-    <tr
-      v-for="(event,i) in events"
-      class="event-row"
-      :key="event.id"
-      @click="displayQR(event.name, event.id)"
-    >
+    <tr v-for="(event,i) in events" class="event-row" :key="event.id" @click="displayQR(event)">
       <td class="name">{{ event.name }}</td>
       <td class="category">{{ event.type }}</td>
       <td class="date">{{ event.startTime | getDate }}</td>
@@ -29,8 +24,11 @@ export default {
     events: Array
   },
   methods: {
-    displayQR(name, id) {
-      this.$router.push({ path: `qrlogin/${id}`, query: { eventName: name } });
+    displayQR(event) {
+      this.$router.push({
+        path: `qrlogin/${event.id}`,
+        query: { eventName: event.name, subject: event.subject }
+      });
     }
   },
   filters: {

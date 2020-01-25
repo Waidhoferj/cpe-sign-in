@@ -1,10 +1,12 @@
 <template>
   <div class="qrcode-display">
     <img src="@/assets/back-icon.svg" alt="events" class="back" @click="$router.push('/events')" />
-    <div class="centered-content">
+    <div class="card centered-content">
       <h1 class="event">{{eventName}}</h1>
-      <h2 class="sign-in-title">Sign In</h2>
-      <canvas id="qrcode" ref="qrcode"></canvas>
+      <h2 class="subject">{{subject}}</h2>
+      <div class="panel">
+        <canvas id="qrcode" ref="qrcode"></canvas>
+      </div>
     </div>
   </div>
 </template>
@@ -17,7 +19,8 @@ export default {
   },
   data() {
     return {
-      eventName: ""
+      eventName: "",
+      subject: ""
     };
   },
   methods: {
@@ -39,8 +42,9 @@ export default {
   },
   mounted() {
     this.generateQRCode();
-    if (this.$route.query.eventName)
-      this.eventName = this.$route.query.eventName;
+    let { eventName, subject } = this.$route.query;
+    if (eventName) this.eventName = eventName;
+    if (subject) this.subject = subject;
   }
 };
 </script>
@@ -51,22 +55,23 @@ export default {
   width: 100%;
   height: 100%;
   .centered-content {
-    padding: 30px;
     text-align: center;
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    border-radius: 7px;
-    background: white;
     color: var(--dark);
+    max-width: 500px;
 
     .event {
       margin: 5px 0;
+      padding-top: 15px;
     }
 
-    .sign-in-title {
-      font-weight: 300;
+    .subject {
+      font-size: 20px;
+      margin: 8px 0;
+      padding-bottom: 15px;
     }
   }
 }
