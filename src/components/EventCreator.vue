@@ -39,8 +39,10 @@ export default {
     async createEvent() {
       //TODO: Fix validations
       if (this.$v.$error) return animateEl(this.$refs.eventButton, "shake");
-      let startTime = new Date(this.date + " " + this.startTime);
-      let endTime = new Date(this.date + " " + this.endTime);
+      let startTime = new Date(this.date);
+      startTime.setHours(this.startTime.split(":")[0]);
+      let endTime = new Date(this.date);
+      endTime.setHours(this.endTime.split(":")[0]);
       let event = {
         name: this.name,
         subject: this.subject,
