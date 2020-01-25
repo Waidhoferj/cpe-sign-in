@@ -44,7 +44,7 @@
       </form>
       <div class="buttons">
         <button class="primary" ref="signUpButton" @click="signUp">Sign Up</button>
-        <button class="secondary" @click="$router.push('login')">Log In</button>
+        <button class="secondary" @click="$router.push('login')">Back</button>
       </div>
     </div>
     <loader v-if="loading"></loader>
