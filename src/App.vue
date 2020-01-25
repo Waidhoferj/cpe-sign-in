@@ -83,8 +83,48 @@ h3 {
   }
 }
 
+.card {
+  background: var(--card);
+  border-radius: 7px;
+  width: 100%;
+  header {
+    text-align: center;
+    padding: 20px 10px;
+    img {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      margin-bottom: 10px;
+    }
+  }
+  .description {
+    background: white;
+    padding: 15px;
+    border-radius: 7px;
+    padding: 20px;
+  }
+  .resources {
+    width: 50%;
+    margin: auto;
+    padding: 20px 0;
+    .resource {
+      display: block;
+      margin: 10px 0;
+      padding: 10px 20px;
+      border-radius: 7px;
+      text-align: center;
+      color: white;
+      background: var(--dark);
+      margin: auto;
+      text-decoration: none;
+      cursor: pointer;
+      border-radius: 7;
+      margin: auto;
+    }
+  }
+}
+
 .back {
-  z-index: 3;
   cursor: pointer;
   position: fixed;
   width: 40px;
