@@ -1,15 +1,14 @@
-<template>
-  <div class="announcement">
+<template functional>
+  <div class="card announcement">
     <header>
-      <img v-if="icon" :src="icon" class="icon" />
-      <img v-if="image" :src="image" class="image" />
-      <h2 class="title">{{title}}</h2>
+      <img :src="props.image" class="image" />
+      <h2 class="title">{{props.title}}</h2>
     </header>
-    <p class="description">{{description}}</p>
+    <p class="description">{{props.description}}</p>
     <div class="resources">
       <a
         class="resource"
-        v-for="{url, label} in resources"
+        v-for="{url, label} in props.resources"
         :href="url"
         :key="label"
         target="_blank"
@@ -33,10 +32,6 @@ export default {
       required: false,
       type: String
     },
-    icon: {
-      required: false,
-      type: String
-    },
     resources: Array
   }
 };
@@ -44,20 +39,10 @@ export default {
 
 <style lang="scss">
 .announcement {
-  width: 100%;
-  border-radius: 7px;
   background: white;
   header {
     text-align: center;
     padding: 20px 10px;
-
-    .icon {
-      margin: auto;
-      display: block;
-      width: 50px;
-      height: 50px;
-      margin-bottom: 12px;
-    }
     .image {
       margin: auto;
       display: block;
@@ -66,31 +51,6 @@ export default {
       height: 200px;
       border-radius: 7px;
       object-fit: cover;
-    }
-  }
-
-  .description {
-    width: 90%;
-    margin: auto;
-  }
-
-  .resources {
-    width: 50%;
-    margin: auto;
-    padding: 20px 0;
-    .resource {
-      display: block;
-      margin: 10px 0;
-      padding: 10px 20px;
-      border-radius: 7px;
-      text-align: center;
-      color: white;
-      background: var(--dark);
-      margin: auto;
-      text-decoration: none;
-      cursor: pointer;
-      border-radius: 7;
-      margin: auto;
     }
   }
 }
