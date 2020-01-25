@@ -1,13 +1,7 @@
 <template>
   <div class="page overview-page">
-    <img
-      src="@/assets/back-icon.svg"
-      :class="{ hide: headerHidden }"
-      alt="log out"
-      class="back"
-      @click="logOut"
-    />
-    <header class="welcome-message" :class="{ hide: headerHidden }">
+    <img src="@/assets/back-icon.svg" alt="log out" class="back" @click="logOut" />
+    <header class="welcome-message">
       <img src="@/assets/cpe-logo.svg" />
       <h1>Welcome {{ user ? user.displayName :"" }}</h1>
       <div class="message" :class="{show: contentLoaded}">
@@ -17,21 +11,14 @@
     </header>
     <div v-if="contentLoaded" class="content">
       <div class="spacer"></div>
+      <div class="section" v-for="card in content">
+        <meeting-card v-if="card.type == 'meeting_info'" v-bind="card"></meeting-card>
+        <upcoming-events v-if="card.type == 'upcoming_events'" v-bind="card"></upcoming-events>
+        <announcement v-if="card.type == 'announcement'" v-bind="card"></announcement>
+      </div>
 
-      <meeting-card
-        ref="meetingCard"
-        v-bind="content.meeting_info"
-        v-waypoint="{
-          active: true,
-          callback: fadeHeader,
-          options: intersectionOptions
-        }"
-      ></meeting-card>
-
-      <upcoming-events :events="content.upcoming_events"></upcoming-events>
-      <announcement v-bind="content.announcement"></announcement>
       <!-- <img v-if="" src="" alt=""> -->
-      <action-caller :actions="content.call_to_action_footer"></action-caller>
+      <action-caller v-if="actions.length" :actions="actions"></action-caller>
     </div>
   </div>
 </template>
@@ -58,34 +45,16 @@ export default {
       /**
        * Information fetched from the CMS to present on the page
        */
-      content: {
-        meeting_info: {
-          subject: "",
-          label: "",
-          description: "",
-          img: ""
-        },
-        upcoming_events: [],
-        announcement: {
-          title: "",
-          description: "",
-          image: "",
-          icon: "",
-          resources: []
-        },
-        call_to_action_footer: ["", ""]
-      },
-      headerHidden: false,
-      intersectionOptions: {
-        root: null,
-        rootMargin: "-150px 0px -100px 0px",
-        threshold: [0]
-      }
+      content: []
     };
   },
   computed: {
     contentLoaded() {
-      return this.content.meeting_info.label.length > 0;
+      return this.content.length > 0;
+    },
+    actions() {
+      let lastEl = this.content[this.content.length - 1];
+      return lastEl.type == "call_to_action_footer" ? lastEl.actions : [];
     }
   },
   methods: {
@@ -94,25 +63,13 @@ export default {
       try {
         response = await this.$prismic.client.query(
           this.$prismic.Predicates.at("document.type", "overview"),
-          { orderings: "[my.event.date desc]" }
+          { orderings: "[document.last_publication_date desc]" }
         );
       } catch (err) {
         return console.error(err);
       }
       let sections = response.results[0].data.body;
       this.content = this.formatSections(sections);
-      console.log(this.content);
-    },
-    fadeHeader({ going, direction }) {
-      if (going === "in" && direction === "top") this.headerHidden = true;
-      else if (going === "out" && direction === "bottom")
-        this.headerHidden = false;
-    },
-    checkHeaderState() {
-      this.headerHidden =
-        this.$refs.meetingCard.$el.getBoundingClientRect().y -
-          window.innerHeight <
-        0;
     },
     logOut() {
       auth.signOut();
@@ -120,7 +77,7 @@ export default {
     }
   },
   mounted() {
-    this.getContent().then(() => this.checkHeaderState());
+    this.getContent();
   }
 };
 </script>
@@ -176,6 +133,11 @@ export default {
     pointer-events: none;
     height: 110vh;
     width: 100%;
+  }
+
+  .section {
+    padding: 20px 0;
+    background: var(--accent);
   }
 
   .hide {
