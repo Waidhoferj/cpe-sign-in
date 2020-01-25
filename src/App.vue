@@ -97,11 +97,16 @@ h3 {
       margin-bottom: 10px;
     }
   }
-  .description {
+  .panel {
     background: white;
     padding: 15px;
     border-radius: 7px;
     padding: 20px;
+  }
+
+  .description {
+    width: 90%;
+    margin: auto;
   }
   .resources {
     width: 50%;
