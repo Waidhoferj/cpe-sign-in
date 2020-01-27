@@ -60,7 +60,8 @@ export default {
 
 <style lang="scss">
 .action-caller {
-  margin: 30px auto;
+  margin: auto;
+  padding: 30px 0;
   text-align: center;
   color: white;
   background: var(--accent);
