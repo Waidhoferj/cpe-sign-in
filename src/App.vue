@@ -136,7 +136,7 @@ h3 {
   top: 20px;
   left: 20px;
   transition: transform 0.3s, opacity 0.7s;
-
+  z-index: -1;
   &:active {
     transform: scale(0.95);
   }
