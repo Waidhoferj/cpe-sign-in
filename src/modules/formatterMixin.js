@@ -27,7 +27,7 @@ export default {
         image: content.image.url,
         label: content.label.length ? content.label[0].text : "",
         subject: content.subject[0].text,
-        description: content.description[0].text,
+        description: content.description.map(line => line.text).join("\n"),
         resources: meeting.items.map(resource => ({
           label: resource.link_title[0].text,
           url: resource.link.url
@@ -61,7 +61,7 @@ export default {
       return {
         image: content.image.url,
         title: content.title[0].text,
-        description: content.description[0].text,
+        description: content.description.map(line => line.text).join("\n"),
         resources,
         type: announcement.slice_type
       };

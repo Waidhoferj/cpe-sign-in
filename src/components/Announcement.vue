@@ -1,7 +1,7 @@
 <template functional>
   <div class="card announcement">
     <header>
-      <img :src="props.image" class="image" />
+      <img v-if="props.image" :src="props.image" class="image" />
       <h2 class="title">{{props.title}}</h2>
     </header>
     <p class="description">{{props.description}}</p>
@@ -40,6 +40,7 @@ export default {
 <style lang="scss">
 .announcement {
   background: white;
+  padding: 20px;
   header {
     text-align: center;
     padding: 20px 10px;

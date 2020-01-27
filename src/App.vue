@@ -110,21 +110,18 @@ h3 {
   }
   .resources {
     width: 50%;
-    margin: auto;
-    padding: 20px 0;
+    margin: 10px auto;
+    margin-top: 20px;
     .resource {
       display: block;
-      margin: 10px 0;
+      margin: 10px auto;
       padding: 10px 20px;
       border-radius: 7px;
       text-align: center;
       color: white;
       background: var(--dark);
-      margin: auto;
       text-decoration: none;
       cursor: pointer;
-      border-radius: 7;
-      margin: auto;
     }
   }
 }
