@@ -5,34 +5,34 @@
       <h1 class="title">Sign Up</h1>
       <form @submit.prevent="signIn">
         <text-field
-          v-model="firstName"
+          v-model.trim="firstName"
           @blur="$v.firstName.$touch()"
           label="First Name"
           :invalid="$v.firstName.$error"
           errorMessage="required"
         ></text-field>
         <text-field
-          v-model="lastName"
+          v-model.trim="lastName"
           @blur="$v.lastName.$touch()"
           label="Last Name"
           :invalid="$v.lastName.$error"
           errorMessage="required"
         ></text-field>
         <text-field
-          v-model="$v.major.$model"
+          v-model.trim="$v.major.$model"
           label="Major"
           :invalid="$v.major.$error"
           errorMessage="required"
         ></text-field>
         <text-field
-          v-model="email"
+          v-model.trim="email"
           @blur="$v.email.$touch()"
           label="Email"
           :invalid="$v.email.$error"
           errorMessage="enter a valid email"
         ></text-field>
         <text-field
-          v-model="password"
+          v-model.trim="password"
           @blur="$v.password.$touch()"
           label="Password"
           :invalid="$v.password.$error"
