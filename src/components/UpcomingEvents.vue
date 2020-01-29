@@ -5,13 +5,19 @@
       <h2>Upcoming Events</h2>
     </header>
     <ul class="events">
-      <event v-for="event in events" v-bind="event" :key="event.title"></event>
+      <event
+        v-for="event in events"
+        @click.native="logInteraction(event.title)"
+        v-bind="event"
+        :key="event.title"
+      ></event>
     </ul>
   </div>
 </template>
 
 <script>
 import Event from "@/components/Event";
+import { analytics } from "@/modules/firebase";
 export default {
   props: {
     events: {
@@ -21,6 +27,14 @@ export default {
   },
   components: {
     Event
+  },
+  methods: {
+    logInteraction(label) {
+      analytics.logEvent("resource_accessed", {
+        element_name: "Event",
+        link_title: label
+      });
+    }
   }
 };
 </script>

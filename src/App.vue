@@ -7,7 +7,8 @@
 </template>
 
 <script>
-import { auth } from "@/modules/firebase";
+import { auth, analytics } from "@/modules/firebase";
+
 export default {
   data() {
     return {
@@ -20,6 +21,7 @@ export default {
     if (eventId) this.eventId = eventId;
     auth.onAuthStateChanged(user => {
       if (user) {
+        analytics.setUserId(user.uid);
         this.signedIn = true;
       } else this.signedIn = false;
     });

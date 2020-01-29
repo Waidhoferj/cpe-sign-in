@@ -11,6 +11,7 @@
         v-for="{url, label} in props.resources"
         :href="url"
         :key="label"
+        @click="$options.methods.logInteraction(props.title, label)"
         target="_blank"
       >{{label}}</a>
     </div>
@@ -18,6 +19,7 @@
 </template>
 
 <script>
+import { analytics } from "@/modules/firebase";
 export default {
   props: {
     title: {
@@ -33,6 +35,15 @@ export default {
       type: String
     },
     resources: Array
+  },
+  methods: {
+    logInteraction(title, label) {
+      analytics.logEvent("resource_accessed", {
+        element_name: "Announcement",
+        subject: title,
+        link_title: label
+      });
+    }
   }
 };
 </script>

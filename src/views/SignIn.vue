@@ -35,7 +35,7 @@ import TextField from "@/components/TextField";
 import Loader from "@/components/Loader";
 
 import firebase from "firebase/app";
-import { auth, db } from "@/modules/firebase";
+import { auth, db, analytics } from "@/modules/firebase";
 import { required, minLength, email } from "vuelidate/lib/validators";
 import { animateEl } from "@/modules/animate";
 export default {
@@ -62,6 +62,10 @@ export default {
     signedIn: async function(signedIn) {
       if (!signedIn) return;
       if (this.eventId) this.logEventAttendance(this.eventId);
+      analytics.logEvent("login", {
+        event: this.eventId,
+        automatic: true
+      });
       this.$router.push("/brief");
     }
   },
@@ -84,6 +88,10 @@ export default {
         alert(err.message);
         return;
       }
+      analytics.logEvent("login", {
+        event: this.eventId,
+        automatic: false
+      });
       this.loading = false;
     },
     /**

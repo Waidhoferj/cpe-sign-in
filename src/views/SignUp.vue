@@ -54,7 +54,7 @@
 <script>
 import TextField from "@/components/TextField";
 import Loader from "@/components/Loader";
-import { auth, db } from "@/modules/firebase";
+import { auth, db, analytics } from "@/modules/firebase";
 import firebase from "firebase/app";
 import { required, minLength, email } from "vuelidate/lib/validators";
 import { animateEl } from "@/modules/animate";
@@ -111,6 +111,11 @@ export default {
         this.loading = false;
         return alert(err.message);
       }
+      analytics.setUserProperties({
+        major: this.major,
+        gender: this.gender
+      });
+      analytics.logEvent("sign_up");
       this.loading = false;
       this.$router.push("brief");
     },
