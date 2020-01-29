@@ -1,5 +1,7 @@
 <template>
   <div class="page forgot-password">
+    <h1>Forgot Password?</h1>
+    <p>We'll send you an email with a link to access your account.</p>
     <text-field
       v-model="email"
       @blur="$v.email.$touch()"
@@ -47,9 +49,14 @@ export default {
 
 <style lang="scss">
 .forgot-password {
+  padding: 20px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+
+  .text-field {
+    margin: 10px auto;
+  }
 }
 </style>
