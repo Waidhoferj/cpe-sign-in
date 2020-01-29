@@ -19,7 +19,6 @@
           errorMessage="must be at least 7 characters"
           type="password"
         ></text-field>
-        <p class="reset-password-link" @click="$router.push('resetpassword')">forgot password</p>
         <input type="submit" value style="display: none" />
       </form>
       <div class="buttons">
@@ -122,8 +121,10 @@ export default {
       margin: 20px auto;
     }
   }
-  .reset-password-link {
-    cursor: pointer;
+  .forgot-password {
+    text-decoration: none;
+    color: white;
+    padding: auto;
   }
 }
 </style>
