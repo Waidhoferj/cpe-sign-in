@@ -18,12 +18,13 @@
           :invalid="$v.lastName.$error"
           errorMessage="required"
         ></text-field>
-        <text-field
-          v-model.trim="$v.major.$model"
+        <select-field
+          v-model.trim="major"
           label="Major"
           :invalid="$v.major.$error"
+          :choices="majorsList"
           errorMessage="required"
-        ></text-field>
+        ></select-field>
         <text-field
           v-model.trim="email"
           @blur="$v.email.$touch()"
@@ -53,14 +54,17 @@
 
 <script>
 import TextField from "@/components/TextField";
+import SelectField from "@/components/SelectField";
 import Loader from "@/components/Loader";
 import { auth, db, analytics } from "@/modules/firebase";
 import firebase from "firebase/app";
 import { required, minLength, email } from "vuelidate/lib/validators";
 import { animateEl } from "@/modules/animate";
+import majors from "@/modules/cp-majors";
 export default {
   components: {
     TextField,
+    SelectField,
     Loader
   },
   props: {
@@ -72,6 +76,7 @@ export default {
       firstName: "",
       lastName: "",
       major: "",
+      majorsList: majors,
       email: "",
       password: ""
     };
