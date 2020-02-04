@@ -28,7 +28,7 @@ import MeetingCard from "@/components/MeetingCard";
 import UpcomingEvents from "@/components/UpcomingEvents";
 import Announcement from "@/components/Announcement";
 import ActionCaller from "@/components/ActionCaller";
-import { auth, db } from "@/modules/firebase";
+import { auth, db, analytics } from "@/modules/firebase";
 import firebase from "firebase/app";
 import Formatter from "@/modules/formatterMixin";
 export default {
@@ -78,6 +78,20 @@ export default {
   },
   mounted() {
     this.getContent();
+    if (auth.currentUser) {
+      let doc = db
+        .collection("users")
+        .doc(auth.currentUser.uid)
+        .get()
+        .then(doc => {
+          if (!doc.exists) return;
+          let user = doc.data();
+          analytics.setUserProperties({
+            major: user.major,
+            gender: user.gender
+          });
+        });
+    }
   }
 };
 </script>
