@@ -54,7 +54,6 @@ export default [
   "Nutrition",
   "Philosophy",
   "Physics",
-  "Physics",
   "Political Science",
   "Public Health",
   "Psychology",
