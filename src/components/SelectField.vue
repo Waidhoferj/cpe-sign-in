@@ -30,7 +30,6 @@ export default {
 
   computed: {
     showLabel() {
-      console.log(this.value);
       return this.value.length;
     }
   }

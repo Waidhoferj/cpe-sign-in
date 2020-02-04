@@ -42,7 +42,6 @@ export default {
   },
   methods: {
     logInteraction(subject, label) {
-      console.log("event logged");
       analytics.logEvent("resource_accessed", {
         element_name: "Meeting Card",
         subject,
