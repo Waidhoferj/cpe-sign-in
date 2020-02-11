@@ -19,6 +19,7 @@
           errorMessage="must be at least 7 characters"
           type="password"
         ></text-field>
+        <router-link class="forgot-password" to="resetpassword">forgot password</router-link>
         <input type="submit" value style="display: none" />
       </form>
       <div class="buttons">
@@ -132,7 +133,10 @@ export default {
   .forgot-password {
     text-decoration: none;
     color: white;
-    padding: auto;
+    padding: 0;
+    width: min-content;
+    white-space: nowrap;
+    margin: auto;
   }
 }
 </style>

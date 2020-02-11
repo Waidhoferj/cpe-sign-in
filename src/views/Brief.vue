@@ -78,13 +78,13 @@ export default {
   },
   mounted() {
     this.getContent();
-    if (auth.currentUser) {
+    if (this.user) {
       let doc = db
         .collection("users")
-        .doc(auth.currentUser.uid)
+        .doc(this.user.uid)
         .get()
         .then(doc => {
-          if (!doc.exists) return;
+          if (!doc.exists) return console.error("Cannot locate user...");
           let user = doc.data();
           analytics.setUserProperties({
             major: user.major,
