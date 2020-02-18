@@ -32,6 +32,7 @@ export default {
     logInteraction(label) {
       analytics.logEvent("resource_accessed", {
         element_name: "Event",
+        subject: label,
         link_title: label
       });
     }
