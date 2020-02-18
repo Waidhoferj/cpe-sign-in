@@ -37,14 +37,20 @@ export default {
     },
 
     formatEvents(content) {
-      let events = content.items.map(event => ({
-        title: event.title[0].text,
-        date: event.date
-          ? new Date(event.date).toDateString().slice(4, 10)
-          : "",
-        description: event.description ? event.description[0].text : "",
-        link: event.link.url
-      }));
+      let events = content.items.map(event => {
+        let date = event.date || "";
+        if (date) {
+          date = new Date(event.date);
+          date.setDate(date.getDate() + 1);
+          date = date.toDateString().slice(4, 10);
+        }
+        return {
+          title: event.title[0].text,
+          date,
+          description: event.description ? event.description[0].text : "",
+          link: event.link.url
+        };
+      });
       return {
         events,
         type: content.slice_type
