@@ -2,19 +2,35 @@
   <div class="page overview-page">
     <header class="welcome-message">
       <img src="@/assets/cpe-logo.svg" />
-      <h1>Welcome {{ user ? user.displayName :"" }}</h1>
-      <div class="message" :class="{show: contentLoaded}">
-        <p>We have an awesome meeting planned for you! Scroll down to learn more!</p>
+      <h1>Welcome {{ user ? user.displayName : "" }}</h1>
+      <div class="message" :class="{ show: contentLoaded }">
+        <p>
+          We have an awesome meeting planned for you! Scroll down to learn more!
+        </p>
         <img class="arrow" src="@/assets/arrow.svg" />
       </div>
     </header>
     <div v-if="contentLoaded" class="content">
-      <img src="@/assets/back-icon.svg" alt="log out" class="back" @click="logOut" />
+      <img
+        src="@/assets/back-icon.svg"
+        alt="log out"
+        class="back"
+        @click="logOut"
+      />
       <div class="spacer"></div>
       <div class="section" v-for="card in content">
-        <meeting-card v-if="card.type == 'meeting_info'" v-bind="card"></meeting-card>
-        <upcoming-events v-if="card.type == 'upcoming_events'" v-bind="card"></upcoming-events>
-        <announcement v-if="card.type == 'announcement'" v-bind="card"></announcement>
+        <meeting-card
+          v-if="card.type == 'meeting_info'"
+          v-bind="card"
+        ></meeting-card>
+        <upcoming-events
+          v-if="card.type == 'upcoming_events'"
+          v-bind="card"
+        ></upcoming-events>
+        <announcement
+          v-if="card.type == 'announcement'"
+          v-bind="card"
+        ></announcement>
       </div>
 
       <!-- <img v-if="" src="" alt=""> -->
@@ -78,20 +94,6 @@ export default {
   },
   mounted() {
     this.getContent();
-    if (this.user) {
-      let doc = db
-        .collection("users")
-        .doc(this.user.uid)
-        .get()
-        .then(doc => {
-          if (!doc.exists) return console.error("Cannot locate user...");
-          let user = doc.data();
-          analytics.setUserProperties({
-            major: user.major,
-            gender: user.gender
-          });
-        });
-    }
   }
 };
 </script>
