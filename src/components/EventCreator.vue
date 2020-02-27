@@ -11,7 +11,7 @@
         <option value="event">Event</option>
       </select>
       <p>Date:</p>
-      <input v-model="date" type="date" class="event-date" />
+      <input v-model="date" type="date" class="event-date" pattern="\d{4}-\d{2}-\d{2}" />
       <p>Start Time:</p>
       <input v-model="startTime" type="time" class="start-time" />
       <p>End Time:</p>
@@ -27,21 +27,25 @@ import { animateEl } from "@/modules/animate";
 import { db } from "@/modules/firebase";
 import firebase from "firebase/app";
 export default {
-  data: () => ({
-    name: "",
-    subject: "",
-    type: "",
-    date: "",
-    startTime: "",
-    endTime: ""
-  }),
+  data() {
+    return {
+      name: "",
+      subject: "",
+      type: "",
+      date: "",
+      startTime: "",
+      endTime: ""
+    };
+  },
   methods: {
     async createEvent() {
-      //TODO: Fix validations
+      this.$v.$touch();
       if (this.$v.$error) return animateEl(this.$refs.eventButton, "shake");
-      let startTime = new Date(this.date);
+      let eventDate = new Date(this.date);
+      eventDate.setDate(eventDate.getDate() + 1);
+      let startTime = new Date(eventDate.getTime());
       startTime.setHours(this.startTime.split(":")[0]);
-      let endTime = new Date(this.date);
+      let endTime = new Date(eventDate.getTime());
       endTime.setHours(this.endTime.split(":")[0]);
       let event = {
         name: this.name,
@@ -71,11 +75,19 @@ export default {
       let daysTilTuesday = dif < 0 ? 7 + dif : dif;
       let nextTuesday = new Date();
       nextTuesday.setDate(nextTuesday.getDate() + daysTilTuesday);
-      return nextTuesday.toJSON().slice(0, 10);
+      return `${nextTuesday.getFullYear()}-${(nextTuesday.getMonth() + 1)
+        .toString()
+        .padStart(2, 0)}-${nextTuesday
+        .getDate()
+        .toString()
+        .padStart(2, 0)}`;
     }
   },
   validations: {
     name: {
+      required
+    },
+    subject: {
       required
     },
     type: {
@@ -88,10 +100,7 @@ export default {
       required
     },
     endTime: {
-      required,
-      greaterThanStartTime: val => {
-        return new Date(val).getTime() > new Date(this.startTime).getTime();
-      }
+      required
     }
   }
 };
